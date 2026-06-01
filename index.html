@@ -75,7 +75,7 @@ select.fil{appearance:none; -webkit-appearance:none; background:#fff url("data:i
 .star{flex:none; width:26px; height:26px; border-radius:8px; border:1px solid var(--line); background:#fff;
   color:#cbd5d8; font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-top:1px}
 .star.on{color:var(--gold); border-color:#f3d79a; background:#fffaf0}
-.sstar{flex:none; width:28px; height:28px; border-radius:8px; border:1px solid var(--line); background:#fff;
+.sstar{flex:none; margin-left:auto; width:28px; height:28px; border-radius:8px; border:1px solid var(--line); background:#fff;
   color:#cbd5d8; font-size:16px; display:flex; align-items:center; justify-content:center; cursor:pointer}
 .sstar.on{color:var(--gold); border-color:#f3d79a; background:#fffaf0}
 .imeta{min-width:0; flex:1}
@@ -93,6 +93,8 @@ select.fil{appearance:none; -webkit-appearance:none; background:#fff url("data:i
 .part{font-size:12.5px; margin-top:4px}
 .part b{color:var(--ink)}
 .venue{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px}
+.notice{background:#fdf6e6; color:#7a5b16; border-bottom:1px solid #ecd9ad; font-size:12px; line-height:1.4; padding:8px 14px; text-align:center}
+.notice b{color:#6b4e12}
 .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--navy); color:#fff;
   padding:10px 16px; border-radius:10px; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s; z-index:50}
 .toast.show{opacity:.96}
@@ -111,6 +113,7 @@ select.fil{appearance:none; -webkit-appearance:none; background:#fff url("data:i
     <div class="tab" data-view="info">Info</div>
   </div>
 </header>
+<div class="notice">⚠️ <b>Unofficial, AI-generated schedule.</b> This is not an official conference app — although unlikely, errors are possible. Edits to the official flipbook are not reflected here in real time.</div>
 <div class="wrap">
   <div id="schedControls" class="controls">
     <div class="search"><span class="ic">🔍</span>
@@ -231,7 +234,6 @@ function card(s,its){
   if(s.time){ const t=document.createElement('span'); t.className='time'; t.textContent=s.time; r1.appendChild(t); }
   const b=document.createElement('span'); b.className='badge '+badgeClass(s.display_type); b.textContent=s.display_type; r1.appendChild(b);
   if(s.room){ const rm=document.createElement('span'); rm.className='room'; rm.textContent=s.room; r1.appendChild(rm); }
-  if(s.page){ const pg=document.createElement('span'); pg.className='pg'; pg.textContent='p.'+s.page; r1.appendChild(pg); }
   if(!s.is_event){ const ss=document.createElement('span'); ss.className='sstar'+(favSess.has(s.fav_uid)?' on':''); ss.textContent=favSess.has(s.fav_uid)?'★':'☆';
     ss.title='Save whole session'; ss.onclick=()=>{ toggle(favSess,s.fav_uid); ss.classList.toggle('on'); ss.textContent=favSess.has(s.fav_uid)?'★':'☆'; saveFavs(); toast(favSess.has(s.fav_uid)?'Session saved':'Session removed'); if(state.view==='favorites'||state.favOnly) render(); }; r1.appendChild(ss); }
   hd.appendChild(r1);
@@ -270,7 +272,7 @@ function renderInfo(){
     DB.fireside_chats.forEach(f=>{ h+=`<div class="kcard"><div class="kname">${esc(f.title)}</div>${f.location?`<div class="kaff">${esc(f.location)}</div>`:''}`;
       (f.participants||[]).forEach(p=> h+=`<div class="part"><b>${esc(p.name)}</b>${p.role?' — '+esc(p.role):''}</div>`); h+='</div>'; }); }
   h+='<h2>Venue</h2><div class="venue"><b>'+esc(DB.meta.venue)+'</b><br>'+esc(DB.meta.address)+'<br>'+esc(DB.meta.dates)+'</div>';
-  h+=`<h2>About this data</h2><div class="venue">Schedule transcribed from the conference flipbook (${DB.sessions.length} sessions, ${DB.meta.n_abstracts} presentations), independently verified page-by-page, and reviewed against the final program. Where a session lists a source page (e.g. <span class="pg" style="color:#9aa8ad">p.20</span>) you can cross-check the original flipbook.</div>`;
+  h+=`<h2>About this data</h2><div class="venue"><b>Unofficial &amp; AI-generated.</b> This is not an official conference app. The schedule was transcribed from the conference flipbook (${DB.sessions.length} sessions, ${DB.meta.n_abstracts} presentations), independently verified, and reviewed — but although unlikely, errors are possible, so confirm details against the official program. Changes made to the official flipbook are not reflected here in real time.</div>`;
   I.innerHTML=h;
 }
 function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
