@@ -93,6 +93,7 @@ select.fil{appearance:none; -webkit-appearance:none; background:#fff url("data:i
 .part{font-size:12.5px; margin-top:4px}
 .part b{color:var(--ink)}
 .venue{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px}
+.howto{margin:5px 0 12px; padding-left:20px} .howto li{margin:3px 0; font-size:12.5px}
 .notice{background:#fdf6e6; color:#7a5b16; border-bottom:1px solid #ecd9ad; font-size:12px; line-height:1.4; padding:8px 14px; text-align:center}
 .notice b{color:#6b4e12}
 .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--navy); color:#fff;
@@ -266,6 +267,10 @@ function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('sh
 
 function renderInfo(){
   const I=$('#info'); let h='';
+  h+='<h2>📲 Install this app</h2><div class="venue">Add it to your home screen for a full-screen, app-like icon that works offline.<br><br>'
+    +'<b>iPhone / iPad — use Safari</b><ol class="howto"><li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button (square with an up-arrow).</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>'
+    +'<b>Android — use Chrome</b><ol class="howto"><li>Open this page in <b>Chrome</b>.</li><li>Tap the <b>⋮</b> menu (top-right).</li><li>Tap <b>Add to Home screen</b> / <b>Install app</b>, then confirm.</li></ol>'
+    +'<span class="hint">Favorites are saved on each device. When the schedule is updated, the app refreshes on next open with a connection.</span></div>';
   h+='<h2>Keynote Speakers</h2>';
   DB.keynotes.forEach(k=>{ h+=`<div class="kcard"><div class="kname">${esc(k.name)}</div>${k.role?`<div class="krole">${esc(k.role)}</div>`:''}${k.affiliation?`<div class="kaff">${esc(k.affiliation)}</div>`:''}${k.bio?`<div class="kbio">${esc(k.bio)}</div>`:''}</div>`; });
   if(DB.fireside_chats.length){ h+='<h2>Fireside Chats</h2>';
